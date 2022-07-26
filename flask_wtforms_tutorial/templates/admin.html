@@ -1,0 +1,64 @@
+{% extends 'layout.jinja2' %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+<div class="formwrapper">
+  <h2 class="title">Administrator Login</h2>
+  {% if my_error %}
+    <h5 style="color:red;"">{{ my_error }}</h5>
+  {% endif %}
+
+  {% if matrix %}
+    <h5>Current Reservations.</h5>
+    {% for x in matrix %}
+        <p> {{ x }}</p>
+    {% endfor %}
+    {% if total %}
+        <h5>Total = ${{ total }}</h5>
+    {% endif %}
+  {% endif%}
+  <form method="POST" action="/admin">
+      {{ form.csrf_token }}
+      <div class="form-field">{{ form.username.label }} {{ form.username }}
+        {% if form.username.errors %}
+          <ul class="errors">
+            {% for error in form.username.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div class="form-field">{{ form.password.label }} {{ form.password }}
+        {% if form.password.errors %}
+          <ul class="errors">
+            {% for error in form.password.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      
+      {{ form.login }}
+  </form>
+
+  {% set navigation_bar = [
+    ('/', 'options', 'Options'),
+    ('/admin', 'admin', 'Admin'),
+    ('/reservations', 'reservations', 'Reservations')
+  ] -%}
+  
+  {% set active_page = active_page|default('index') -%}
+  ...
+  <ul id="navigation">
+    {% for href, id, caption in navigation_bar %}
+    <li{% if id == active_page %} class="active"{% endif
+    %}><a href="{{ href|e }}">{{ caption|e }}</a>
+    </li>
+  {% endfor %}
+  </ul>
+  
+</div>
+{% endblock %}

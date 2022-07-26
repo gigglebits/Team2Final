@@ -1,0 +1,86 @@
+{% extends 'layout.jinja2' %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block content %}
+
+<div class="formwrapper">
+  <h2 class="title">Reserve Your Seat</h2>
+
+
+  {% if submitted == True %}
+  <h4>Thank you for submitting your reservation!</h4>
+  <h5>You've selected Row: {{ row }} and Seat: {{ col }}. Your confirmation number is {{ confirmation }}</h5>
+  {% endif %}
+  {% if message %}
+  <h4> {{ message }} </h4>
+  {% endif %}
+  {% if matrix %}
+  <h5>Current Openings</h5>
+  {% for x in matrix %}
+    <p>{{ x }}</p>
+  {% endfor %}
+  {% endif %}
+  <form method="POST" action="/reservations">
+      {{ form.csrf_token }}
+      <div class="form-field">{{ form.first_name.label }} {{ form.first_name }}
+        {% if form.first_name.errors %}
+          <ul class="errors">
+            {% for error in form.first_name.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div class="form-field">{{ form.last_name.label }} {{ form.last_name }}
+        {% if form.last_name.errors %}
+          <ul class="errors">
+            {% for error in form.last_name.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div class="form-field">{{ form.row.label }} {{ form.row }}
+        {% if form.row.errors %}
+          <ul class="errors">
+            {% for error in form.row.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div class="form-field">{{ form.seat.label }} {{ form.seat }}
+        {% if form.seat.errors %}
+          <ul class="errors">
+            {% for error in form.seat.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      
+      {{ form.reserve }}
+  </form>
+
+  {% set navigation_bar = [
+    ('/', 'options', 'Options'),
+    ('/admin', 'admin', 'Admin'),
+    ('/reservations', 'reservations', 'Reservations')
+  ] -%}
+  
+  {% set active_page = active_page|default('index') -%}
+  ...
+  <ul id="navigation">
+    {% for href, id, caption in navigation_bar %}
+    <li{% if id == active_page %} class="active"{% endif
+    %}><a href="{{ href|e }}">{{ caption|e }}</a>
+    </li>
+  {% endfor %}
+  </ul>
+  
+</div>
+
+{% endblock %}
