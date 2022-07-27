@@ -51,7 +51,7 @@ def admin():
                 #form = UserOptionForm()
                 #return render_template("admin.html", form=form, template="form-template")
             else:
-                my_error = "Username or Password not incorrect."
+                my_error = "Username or Password incorrect."
                 return render_template("admin.html", form=form, template="form-template", my_error=my_error)
         else:
             my_error = "Username or Password not found."
