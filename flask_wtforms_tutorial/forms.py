@@ -134,8 +134,38 @@ class extraFunctionality():
             return True
     
     def make_confirmation(self, fname):
-        salt = "ITFOTC4320"
-        confirmation = ''.join(map(''.join, zip(fname, salt)))
+        #get lists needed
+        saltList = ["I","T","F","O","T","C","4","3","2","0"]
+        nameList = []
+        nameList[:0] = fname
+        zipped = []
+        #get list lengths
+        nameLen = len(nameList)
+        saltLen = len(saltList)
+        i = 0
+        check = True
+        while(check):
+            if saltLen >= nameLen:
+                if i < nameLen:
+                    zipped.append(nameList[i])
+                    zipped.append(saltList[i])
+                    i += 1
+                elif i < saltLen:
+                    zipped.append(saltList[i])
+                    i += 1
+                else:
+                    check = False
+            else:
+                if i < saltLen:
+                    zipped.append(nameList[i])
+                    zipped.append(saltList[i])
+                    i += 1
+                elif i < nameLen:
+                    zipped.append(nameList[i])
+                    i += 1
+                else:
+                    check = False
+        confirmation = ''.join(zipped)
         return confirmation
 
 #def test():
